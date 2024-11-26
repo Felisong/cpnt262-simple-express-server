@@ -28,20 +28,39 @@ function logger(req, res, next) {
 
 app.use(logger);
 
-// SERVER STATIC ASSETS
+// test
 const route = path.join(__dirname, "public");
+const pages = path.join(__dirname, "pages");
 
+// SERVER STATIC ASSETS
 app.use(express.static(route));
+app.use(express.static(path));
+
+//test
+app.use(express.Router);
 
 // ROUTING CODE
-
 app.get("/", (req, res) => {
-  res.send("Meow!");
+  res.sendFile(path.join(__dirname, "pages", "index.html"));
 });
 
-app.get("/arr", (req, res) => {
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(pages, "about.html"));
+});
+
+app.get("/arrApi", (req, res) => {
   res.send([2, 4, 6, 10, 12, 14, 18, 20, 22]);
 });
+
+app.use((req, res, next) => {
+  res.status(404).send("Page Not Found"); // Or render a custom 404 page
+});
+app.use((err, req, res, next) => {
+  console.error(`Unhandled Error: ${err}`);
+  res.status(500).send("Internal Server Error");
+});
+
+// app. listen
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);
