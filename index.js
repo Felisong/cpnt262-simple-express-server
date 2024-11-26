@@ -28,6 +28,11 @@ function logger(req, res, next) {
 
 app.use(logger);
 
+// SERVER STATIC ASSETS
+const route = path.join(__dirname, "public");
+
+app.use(express.static(route));
+
 // ROUTING CODE
 
 app.get("/", (req, res) => {
